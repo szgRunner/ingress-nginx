@@ -535,6 +535,9 @@ func buildProxyPass(host string, b interface{}, loc interface{}) string {
 
 	// defProxyPass returns the default proxy_pass, just the name of the upstream
 	defProxyPass := fmt.Sprintf("%v %s%s;", proxyPass, proto, upstreamName)
+	if proto == "http://" || proto == "https://" {
+		defProxyPass = fmt.Sprintf("%v %s%s$request_uri;", proxyPass, proto, upstreamName)
+	}
 
 	// if the path in the ingress rule is equals to the target: no special rewrite
 	if path == location.Rewrite.Target {
